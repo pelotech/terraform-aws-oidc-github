@@ -19,6 +19,12 @@ variable "managed_policy_names" {
   description = "Managed policy names to attach to the OIDC role."
 }
 
+variable "max_session_duration" {
+  type = number
+  description = "Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere"
+  default = 3600
+}
+
 variable "assume_role_names" {
   description = "List of roles that can assume the OIDC role. Useful for debuging cluster before aws-config is updated."
   type        = list(string)
