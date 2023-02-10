@@ -4,24 +4,6 @@ Terraform module to configure GitHub Actions with AWS Identity Provider Open ID 
 ## Debugging features
 The `assume_role_names` input allows you to assume the OIDC role and act as if you were the GitHub Actions pipeline. This is very useful for debugging while you're getting things setup. Note: we recommend removing this once you're production ready so that all further changes are only applied via the pipeline.
 
-## Example
-```terraform
-provider "aws" {
-  alias = "example"
-  region = "us-west-2"
-}
-
-module "aws_oidc_github" {
-  source = "pelotech/oidc-github/aws"
-  providers = {
-    aws = aws.example
-  }
-  role_name                = "Example"
-  github_repos             = ["repo:example_org/example_repo:ref:refs/heads/main"]
-  managed_policy_names     = ["AdministratorAccess"]
-}
-```
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
