@@ -21,6 +21,23 @@ module "aws_oidc_github" {
   managed_policy_names     = ["AdministratorAccess"]
 }
 ```
+```yaml
+jobs:
+  apply-terraform-main:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::{account_id}:role/ci/GithubCI-OIDC-TF
+          aws-region: us-west-2
+          role-duration-seconds: 1200 #can be up to the max set in the terraform module, defaults to 15 min
+```
+
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
