@@ -20,6 +20,6 @@ module "aws_oidc_github" {
   role_name                = "TF"
   match_value              = ["repo:organization/repository_name:ref:refs/heads/main"]
   managed_policy_names     = ["SomeManagedpolicy"]
-  # Should only add users that already have admin access - nice to debug eks clusters as the role that created them
+  # Be careful here - they will have the ability to be the role of the oidc and will have the same max permission as the managed policy name state.
   assume_role_names = ["aws-reserved/sso.amazonaws.com/eu-west-2/AWSReservedSSO_SomeManagedpolicy_XXXXXXXXXXXXXXXXX"]
 }
