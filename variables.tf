@@ -21,12 +21,6 @@ variable "aud_value" {
   description = "GitHub Aud"
 }
 
-variable "match_field" {
-  type        = string
-  default     = "sub"
-  description = "GitHub match_field."
-}
-
 variable "max_session_duration" {
   type = number
   description = "Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere"

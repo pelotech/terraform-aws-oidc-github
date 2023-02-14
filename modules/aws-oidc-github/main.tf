@@ -31,7 +31,7 @@ data "aws_iam_policy_document" "assume-role-policy" {
     }
     condition {
       test     = "StringLike"
-      variable = "${trimprefix(aws_iam_openid_connect_provider.github.url, "https://")}:${var.match_field}"
+      variable = "${trimprefix(aws_iam_openid_connect_provider.github.url, "https://")}:sub"
       values   = var.github_repos
     }
 

@@ -10,12 +10,6 @@ variable "aud_value" {
   description = "GitHub Aud"
 }
 
-variable "match_field" {
-  type        = string
-  default     = "sub"
-  description = "GitHub match_field."
-}
-
 variable "github_repos" {
   type        = list(string)
   description = "A list of repositories the OIDC role should have access to."

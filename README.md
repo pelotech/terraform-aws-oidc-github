@@ -51,7 +51,6 @@ No resources.
 | <a name="input_assume_role_names"></a> [assume\_role\_names](#input\_assume\_role\_names) | List of roles that can assume the OIDC role. Useful for debugging cluster before aws-config is updated. | `list(string)` | `[]` | no |
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | GitHub Aud | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub URL to perform TLS verification against. | `string` | `"https://token.actions.githubusercontent.com"` | no |
-| <a name="input_match_field"></a> [match\_field](#input\_match\_field) | GitHub match\_field. | `string` | `"sub"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere | `number` | `3600` | no |
 | <a name="input_subject_roles"></a> [subject\_roles](#input\_subject\_roles) | Subject to role mapping. Ex: repo:organization/infrastructure:ref:refs/heads/main -> [AdministratorAccess, AmazonS3FullAccess, CustomUserPolicyOne] | `map(list(string))` | n/a | yes |
 

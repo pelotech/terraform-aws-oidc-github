@@ -15,7 +15,6 @@ module "aws_oidc_github" {
   github_repos         = [each.key]
   managed_policy_names = each.value
   assume_role_names    = var.assume_role_names
-  match_field          = var.match_field
   aud_value            = var.aud_value
   github_tls_url       = var.github_tls_url
   max_session_duration = var.max_session_duration

@@ -37,7 +37,6 @@ No modules.
 | <a name="input_github_repos"></a> [github\_repos](#input\_github\_repos) | A list of repositories the OIDC role should have access to. | `list(string)` | n/a | yes |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub URL to perform TLS verification against. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_managed_policy_names"></a> [managed\_policy\_names](#input\_managed\_policy\_names) | Managed policy names to attach to the OIDC role. | `list(string)` | n/a | yes |
-| <a name="input_match_field"></a> [match\_field](#input\_match\_field) | GitHub match\_field. | `string` | `"sub"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere | `number` | `3600` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The name of the OIDC role. Note: this will be prefixed with 'github-role-' and any special characters will be replaced with '-'. | `string` | n/a | yes |
 
