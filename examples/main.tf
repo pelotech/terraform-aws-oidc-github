@@ -29,6 +29,4 @@ module "aws_oidc_github" {
       policy_names = ["AmazonS3ReadOnlyAccess"]
     }
   }
-  # Be careful here - they will have the ability to be the role of the oidc and will have the same max permission as the managed policy name state.
-  assume_role_names =
 }
