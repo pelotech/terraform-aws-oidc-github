@@ -9,11 +9,11 @@ terraform {
 }
 
 module "aws_oidc_github" {
-  for_each             = var.subject_roles
+  for_each             = var.subject_policies
   source               = "./modules/aws-oidc-github"
-  role_name            = replace(each.key, "/\\W/", "-")
+  role_name            = each.value.role_name
   github_repos         = [each.key]
-  managed_policy_names = each.value
+  policy_names         = each.value.policy_names
   assume_role_names    = var.assume_role_names
   aud_value            = var.aud_value
   github_tls_url       = var.github_tls_url

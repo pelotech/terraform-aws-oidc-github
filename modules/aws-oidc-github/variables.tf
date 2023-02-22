@@ -20,9 +20,9 @@ variable "role_name" {
   type        = string
 }
 
-variable "managed_policy_names" {
+variable "policy_names" {
   type        = list(string)
-  description = "Managed policy names to attach to the OIDC role."
+  description = "Policy names to attach to the OIDC role."
 }
 
 variable "assume_role_names" {

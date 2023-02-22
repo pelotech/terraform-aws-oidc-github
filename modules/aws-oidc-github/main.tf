@@ -62,6 +62,6 @@ resource "aws_iam_role" "github_ci" {
   managed_policy_arns  = formatlist(
     "arn:%s:iam::aws:policy/%s",
     data.aws_partition.current.partition,
-    var.managed_policy_names
+    var.policy_names
   )
 }

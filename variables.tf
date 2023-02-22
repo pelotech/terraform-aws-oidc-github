@@ -4,9 +4,12 @@ variable "assume_role_names" {
   default     = []
 }
 
-variable "subject_roles" {
-  type = map(list(string))
-  description = "Subject to role mapping. Ex: repo:organization/infrastructure:ref:refs/heads/main -> [AdministratorAccess, AmazonS3FullAccess, CustomUserPolicyOne]"
+variable "subject_policies" {
+  type = map(object({
+    role_name    = string
+    policy_names = list(string)
+  }))
+  description = "Subject to policy mapping. repo:organization/infrastructure:ref:refs/heads/main as the key and object value for the create role name as well as a list of policy names ie [\"Administrator\"] "
 }
 
 variable "github_tls_url" {
@@ -22,7 +25,7 @@ variable "aud_value" {
 }
 
 variable "max_session_duration" {
-  type = number
+  type        = number
   description = "Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere"
-  default = 3600
+  default     = 3600
 }

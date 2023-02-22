@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 module "aws_oidc_github" {
-  source    = "pelotech/oidc-github/aws"
+  source = "pelotech/oidc-github/aws"
   providers = {
     aws = aws.my_alias
   }
