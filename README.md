@@ -5,7 +5,7 @@ This module provisions the necessary role and permissions as defined in the
 [official GitHub docs](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
 
 ## Multiple repo configuration
-This module allows you to have a map of repos(subjects) to policies in the AWS account.
+This module allows you to create roles for lists of repos(subjects) and policies in the AWS account.
 Curently it only supports policies in the same account as the role being created.
 This is helpful for non-mono repo style groups as well as for large organizations where teams have separate repo ownership for the same AWS account.
 
@@ -58,11 +58,10 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_assume_role_names"></a> [assume\_role\_names](#input\_assume\_role\_names) | List of roles that can assume the OIDC role. Useful for debugging cluster before aws-config is updated. | `list(string)` | `[]` | no |
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | GitHub Aud | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub URL to perform TLS verification against. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere | `number` | `3600` | no |
-| <a name="input_subject_policies"></a> [subject\_policies](#input\_subject\_policies) | Subject to policy mapping. repo:organization/infrastructure:ref:refs/heads/main as the key and object value for the create role name as well as a list of policy names ie ["Administrator"] | <pre>map(object({<br>    role_name    = string<br>    policy_names = list(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_role_subject-repos_policies"></a> [role\_subject-repos\_policies](#input\_role\_subject-repos\_policies) | role name to repos and policies mapping. role name as the key and object value for repo subjects ie "repo:organization/infrastructure:ref:refs/heads/main" as well as a list of policy names ie ["Administrator"] and list of roles that can assume the new role for debugging | <pre>map(object({<br>    subject_repos    = list(string)<br>    policy_names = list(string)<br>    assume_role_names = list(string)<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

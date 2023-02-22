@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "assume-role-policy" {
 
   }
   dynamic "statement" {
-    for_each = var.assume_role_names
+    for_each = var.assume_role_names ? var.assume_role_names : []
     content {
       actions = ["sts:AssumeRole"]
       principals {
