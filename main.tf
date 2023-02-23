@@ -21,7 +21,7 @@ resource "aws_iam_openid_connect_provider" "github" {
 
 module "aws_oidc_github" {
   for_each             = var.role_subject-repos_policies
-  source               = "modules/aws-roles-oidc-github"
+  source               = "./modules/aws-roles-oidc-github"
   role_name            = each.key
   github_repos         = each.value.subject_repos
   policy_arns         = each.value.policy_arns
