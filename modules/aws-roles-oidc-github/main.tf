@@ -11,15 +11,7 @@ terraform {
 data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
 
-data "tls_certificate" "github" {
-  url = var.github_tls_url
-}
 
-resource "aws_iam_openid_connect_provider" "github" {
-  url             = var.github_tls_url
-  client_id_list  = [var.aud_value]
-  thumbprint_list = [data.tls_certificate.github.certificates.0.sha1_fingerprint]
-}
 
 data "aws_iam_policy_document" "assume-role-policy" {
   statement {
@@ -27,11 +19,11 @@ data "aws_iam_policy_document" "assume-role-policy" {
 
     principals {
       type        = "Federated"
-      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      identifiers = [var.github_oidc_provider_arn]
     }
     condition {
       test     = "StringLike"
-      variable = "${trimprefix(aws_iam_openid_connect_provider.github.url, "https://")}:sub"
+      variable = "${trimprefix(var.github_oidc_provider_url, "https://")}:sub"
       values   = var.github_repos
     }
 
@@ -58,9 +50,5 @@ resource "aws_iam_role" "github_ci" {
   description          = "GitHubCI with OIDC"
   max_session_duration = var.max_session_duration
   assume_role_policy   = data.aws_iam_policy_document.assume-role-policy.json
-  managed_policy_arns  = formatlist(
-    "arn:%s:iam::aws:policy/%s",
-    data.aws_partition.current.partition,
-    var.policy_names
-  )
+  managed_policy_arns = var.policy_arns
 }

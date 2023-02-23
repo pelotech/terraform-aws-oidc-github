@@ -21,12 +21,12 @@ module "aws_oidc_github" {
   subject_policies = {
     "org-infra-main" = {
       subject_repos = ["repo:organization/infrastructure:ref:refs/heads/main"]
-      policy_names = ["AdministratorAccess"]
+      policy_arns = ["arn:aws:iam::aws:policy/AdministratorAccess"]
       assume_role_names = ["aws-reserved/sso.amazonaws.com/eu-west-2/AWSReservedSSO_SomeManagedpolicy_XXXXXXXXXXXXXXXXX"]
     }
     "org-infra-all-branches"    = {
       subject_repos = ["repo:organization/infrastructure:ref:refs/heads/*"]
-      policy_names = ["AmazonS3ReadOnlyAccess"]
+      policy_arns = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"]
     }
   }
 }

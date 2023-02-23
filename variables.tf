@@ -1,10 +1,10 @@
 variable "role_subject-repos_policies" {
   type = map(object({
     subject_repos    = list(string)
-    policy_names = list(string)
+    policy_arns = list(string)
     assume_role_names = optional(list(string))
   }))
-  description = "role name to repos and policies mapping. role name as the key and object value for repo subjects ie \"repo:organization/infrastructure:ref:refs/heads/main\" as well as a list of policy names ie [\"Administrator\"] and list of roles that can assume the new role for debugging"
+  description = "role name to repos and policies mapping. role name as the key and object value for repo subjects ie \"repo:organization/infrastructure:ref:refs/heads/main\" as well as a list of policy arns ie [\"Administrator\"] and list of roles that can assume the new role for debugging"
 }
 
 variable "github_tls_url" {

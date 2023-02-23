@@ -1,13 +1,11 @@
-variable "github_tls_url" {
-  type        = string
-  default     = "https://token.actions.githubusercontent.com"
-  description = "GitHub URL to perform TLS verification against."
+variable "github_oidc_provider_arn" {
+  type = string
+  description = "arn to the provider for which the role will be allowed with"
 }
 
-variable "aud_value" {
-  type        = string
-  default     = "sts.amazonaws.com"
-  description = "GitHub Aud"
+variable "github_oidc_provider_url" {
+  type = string
+  description = "url to the provider for which the role will be allowed with"
 }
 
 variable "github_repos" {
@@ -20,9 +18,9 @@ variable "role_name" {
   type        = string
 }
 
-variable "policy_names" {
+variable "policy_arns" {
   type        = list(string)
-  description = "Policy names to attach to the OIDC role."
+  description = "Policy arns to attach to the OIDC role."
 }
 
 variable "assume_role_names" {
