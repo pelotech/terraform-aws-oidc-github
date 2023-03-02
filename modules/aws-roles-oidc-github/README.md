@@ -36,6 +36,7 @@ No modules.
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere | `number` | `3600` | no |
 | <a name="input_policy_arns"></a> [policy\_arns](#input\_policy\_arns) | Policy arns to attach to the OIDC role. | `list(string)` | n/a | yes |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The name of the OIDC role. Note: this will be prefixed with 'github-role-' and any special characters will be replaced with '-'. | `string` | n/a | yes |
+| <a name="input_role_path"></a> [role\_path](#input\_role\_path) | The path for the role to be created in | `string` | n/a | yes |
 
 ## Outputs
 

@@ -51,7 +51,7 @@ jobs:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_aws_oidc_github"></a> [aws\_oidc\_github](#module\_aws\_oidc\_github) | modules/aws-roles-oidc-github | n/a |
+| <a name="module_aws_oidc_github"></a> [aws\_oidc\_github](#module\_aws\_oidc\_github) | ./modules/aws-roles-oidc-github | n/a |
 
 ## Resources
 
@@ -67,7 +67,7 @@ jobs:
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | GitHub Aud | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub URL to perform TLS verification against. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere | `number` | `3600` | no |
-| <a name="input_role_subject-repos_policies"></a> [role\_subject-repos\_policies](#input\_role\_subject-repos\_policies) | role name to repos and policies mapping. role name as the key and object value for repo subjects ie "repo:organization/infrastructure:ref:refs/heads/main" as well as a list of policy arns ie ["Administrator"] and list of roles that can assume the new role for debugging | <pre>map(object({<br>    subject_repos    = list(string)<br>    policy_arns = list(string)<br>    assume_role_names = optional(list(string))<br>  }))</pre> | n/a | yes |
+| <a name="input_role_subject-repos_policies"></a> [role\_subject-repos\_policies](#input\_role\_subject-repos\_policies) | role name to repos and policies mapping. role name as the key and object value for repo subjects ie "repo:organization/infrastructure:ref:refs/heads/main" as well as a list of policy arns ie ["Administrator"] and list of roles that can assume the new role for debugging | <pre>map(object({<br>    role_path         = optional(string)<br>    subject_repos     = list(string)<br>    policy_arns       = list(string)<br>    assume_role_names = optional(list(string))<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
