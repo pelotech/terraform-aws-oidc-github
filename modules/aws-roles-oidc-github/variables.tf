@@ -1,10 +1,10 @@
 variable "github_oidc_provider_arn" {
-  type = string
+  type        = string
   description = "arn to the provider for which the role will be allowed with"
 }
 
 variable "github_oidc_provider_url" {
-  type = string
+  type        = string
   description = "url to the provider for which the role will be allowed with"
 }
 
@@ -15,6 +15,11 @@ variable "github_repos" {
 
 variable "role_name" {
   description = "The name of the OIDC role. Note: this will be prefixed with 'github-role-' and any special characters will be replaced with '-'."
+  type        = string
+}
+
+variable "role_path" {
+  description = "The path for the role to be created in"
   type        = string
 }
 
@@ -30,7 +35,7 @@ variable "assume_role_names" {
 }
 
 variable "max_session_duration" {
-  type = number
+  type        = number
   description = "Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere"
-  default = 3600
+  default     = 3600
 }

@@ -47,8 +47,9 @@ data "aws_iam_policy_document" "assume-role-policy" {
 
 resource "aws_iam_role" "github_ci" {
   name                 = var.role_name
+  path                 = var.role_path
   description          = "GitHubCI with OIDC"
   max_session_duration = var.max_session_duration
   assume_role_policy   = data.aws_iam_policy_document.assume-role-policy.json
-  managed_policy_arns = var.policy_arns
+  managed_policy_arns  = var.policy_arns
 }

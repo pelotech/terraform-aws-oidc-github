@@ -20,13 +20,14 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 module "aws_oidc_github" {
-  for_each             = var.role_subject-repos_policies
-  source               = "./modules/aws-roles-oidc-github"
-  role_name            = each.key
-  github_repos         = each.value.subject_repos
-  policy_arns         = each.value.policy_arns
-  assume_role_names    = each.value.assume_role_names
+  for_each                 = var.role_subject-repos_policies
+  source                   = "./modules/aws-roles-oidc-github"
+  role_name                = each.key
+  role_path                = each.value.role_path != null ? each.value.role_path : ""
+  github_repos             = each.value.subject_repos
+  policy_arns              = each.value.policy_arns
+  assume_role_names        = each.value.assume_role_names
   github_oidc_provider_arn = aws_iam_openid_connect_provider.github.arn
   github_oidc_provider_url = aws_iam_openid_connect_provider.github.url
-  max_session_duration = var.max_session_duration
+  max_session_duration     = var.max_session_duration
 }
