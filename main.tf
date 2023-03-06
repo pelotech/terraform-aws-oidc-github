@@ -23,7 +23,7 @@ module "aws_oidc_github" {
   for_each                 = var.role_subject-repos_policies
   source                   = "./modules/aws-roles-oidc-github"
   role_name                = each.key
-  role_path                = each.value.role_path != null ? each.value.role_path : ""
+  role_path                = each.value.role_path != null ? each.value.role_path : "/"
   github_repos             = each.value.subject_repos
   policy_arns              = each.value.policy_arns
   assume_role_names        = each.value.assume_role_names
