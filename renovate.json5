@@ -1,5 +1,6 @@
 {
   extends: [
+    ":semanticCommits",
     "config:recommended",
     'helpers:pinGitHubActionDigests'
   ],
