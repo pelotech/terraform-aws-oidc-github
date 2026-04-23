@@ -1,10 +1,14 @@
 terraform {
+  required_version = ">= 1.5.7"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.0"
     }
-    tls = ">= 4.0.3"
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 4.0.3"
+    }
   }
 }
 
@@ -13,7 +17,7 @@ data "aws_caller_identity" "current" {}
 
 
 
-data "aws_iam_policy_document" "assume-role-policy" {
+data "aws_iam_policy_document" "assume_role_policy" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
 
@@ -50,6 +54,6 @@ resource "aws_iam_role" "github_ci" {
   path                 = var.role_path
   description          = "GitHubCI with OIDC"
   max_session_duration = var.max_session_duration
-  assume_role_policy   = data.aws_iam_policy_document.assume-role-policy.json
+  assume_role_policy   = data.aws_iam_policy_document.assume_role_policy.json
   managed_policy_arns  = var.policy_arns
 }

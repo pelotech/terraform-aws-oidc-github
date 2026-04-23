@@ -1,10 +1,14 @@
 terraform {
+  required_version = ">= 1.5.7"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 4.0"
     }
-    tls = ">= 4.0.3"
+    tls = {
+      source  = "hashicorp/tls"
+      version = ">= 4.0.3"
+    }
   }
 }
 
@@ -16,7 +20,7 @@ data "tls_certificate" "github" {
 resource "aws_iam_openid_connect_provider" "github" {
   url             = var.github_tls_url
   client_id_list  = [var.aud_value]
-  thumbprint_list = [data.tls_certificate.github.certificates.0.sha1_fingerprint]
+  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
 }
 
 module "aws_oidc_github" {
