@@ -1,41 +1,41 @@
 variable "github_oidc_provider_arn" {
   type        = string
-  description = "arn to the provider for which the role will be allowed with"
+  description = "ARN of the GitHub OIDC provider that the IAM role will trust."
 }
 
 variable "github_oidc_provider_url" {
   type        = string
-  description = "url to the provider for which the role will be allowed with"
+  description = "URL of the GitHub OIDC provider (e.g. https://token.actions.githubusercontent.com)."
 }
 
 variable "github_repos" {
   type        = list(string)
-  description = "A list of repositories the OIDC role should have access to."
+  description = "Subject claims (repo:org/repo:ref:refs/heads/main, repo:org/repo:environment:prod, etc.) the role will allow to assume it."
 }
 
 variable "role_name" {
-  description = "The name of the OIDC role. Note: this will be prefixed with 'github-role-' and any special characters will be replaced with '-'."
   type        = string
+  description = "Name of the IAM role to create. Used verbatim — no prefixing or sanitization is applied."
 }
 
 variable "role_path" {
-  description = "The path for the role to be created in"
   type        = string
+  description = "IAM path to create the role under. Must start and end with '/' (e.g. '/' or '/github/')."
 }
 
 variable "policy_arns" {
   type        = list(string)
-  description = "Policy arns to attach to the OIDC role."
+  description = "IAM policy ARNs to attach to the role (managed or customer-managed policies)."
 }
 
 variable "assume_role_names" {
-  description = "List of roles that can assume the OIDC role. Useful for debugging cluster before aws-config is updated."
   type        = list(string)
   default     = []
+  description = "IAM role names in the same account that may assume this role via sts:AssumeRole. Useful for local debugging; remove before production."
 }
 
 variable "max_session_duration" {
   type        = number
-  description = "Maximum session duration in seconds. - by default assume role will be 15 minutes - when calling from actions you'll need to increase up to the maximum allowed hwere"
   default     = 3600
+  description = "Maximum session duration in seconds for the role. Defaults to 1 hour. Increase up to 43200 (12h) if your workflows need longer sessions."
 }
