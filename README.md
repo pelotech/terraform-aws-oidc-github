@@ -187,4 +187,5 @@ If you set `audience:` on `aws-actions/configure-aws-credentials`, set the match
 | <a name="output_github_oidc_provider_arn"></a> [github\_oidc\_provider\_arn](#output\_github\_oidc\_provider\_arn) | oidc provider arn to use for roles/policies |
 | <a name="output_github_oidc_provider_url"></a> [github\_oidc\_provider\_url](#output\_github\_oidc\_provider\_url) | oidc provider url to use for roles/policies |
 | <a name="output_iam_role_arns_map"></a> [iam\_role\_arns\_map](#output\_iam\_role\_arns\_map) | Map of role name to IAM role ARN. |
+| <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of role name (the var.roles key) to the created IAM role name. Useful for wiring downstream resources (e.g. aws\_iam\_role\_policy) without parsing the ARN. |
 <!-- END_TF_DOCS -->

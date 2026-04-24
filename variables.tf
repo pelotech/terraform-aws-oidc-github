@@ -26,6 +26,22 @@ variable "roles" {
     ])
     error_message = "Each role_path must start and end with '/' and only contain [a-zA-Z0-9._+-] segments (e.g. \"/\", \"/github/\", \"/teams/platform/\")."
   }
+
+  validation {
+    condition = alltrue([
+      for name, _ in var.roles : can(regex("^[a-zA-Z0-9+=,.@_-]{1,64}$", name))
+    ])
+    error_message = "Each role name (the map key in var.roles) must be 1–64 characters and match the IAM-allowed charset [a-zA-Z0-9+=,.@_-]."
+  }
+
+  validation {
+    condition = alltrue([
+      for v in var.roles : alltrue([
+        for arn in v.policy_arns : can(regex("^arn:aws[a-z0-9-]*:iam::(aws|[0-9]{12}):policy/", arn))
+      ])
+    ])
+    error_message = "Every policy_arns entry must be a valid IAM policy ARN (e.g. \"arn:aws:iam::aws:policy/ReadOnlyAccess\" or \"arn:aws:iam::123456789012:policy/my-policy\")."
+  }
 }
 
 variable "tags" {
