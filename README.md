@@ -128,10 +128,6 @@ The role lives in the account where you applied this module. The `role-to-assume
 **Custom audience**
 If you set `audience:` on `aws-actions/configure-aws-credentials`, set the matching `aud_value` here. The default (`sts.amazonaws.com`) matches the action's default.
 
-## Wrappers
-
-The [`wrappers/`](./wrappers) directory contains thin wrapper modules pre-configured to call this module. They're useful if you'd rather declare your roles in `terraform.tfvars`-friendly shapes than write a `module` block. Most users won't need them.
-
 ## Contributing & releases
 
 - This repo uses [Conventional Commits](https://www.conventionalcommits.org/) and `release-please` to drive versioning. Use `feat:`, `fix:`, `chore:`, etc. so the changelog and version bumps are correct.
