@@ -145,14 +145,12 @@ The [`wrappers/`](./wrappers) directory contains thin wrapper modules pre-config
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
-| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 4.0.3 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | >= 4.0.3 |
 
 ## Modules
 
@@ -165,7 +163,6 @@ The [`wrappers/`](./wrappers) directory contains thin wrapper modules pre-config
 | Name | Type |
 | ---- | ---- |
 | [aws_iam_openid_connect_provider.github](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
-| [tls_certificate.github](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/data-sources/certificate) | data source |
 
 ## Inputs
 
