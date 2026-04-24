@@ -1,5 +1,7 @@
 # terraform-aws-oidc-github
 
+[![Latest Release](https://img.shields.io/github/v/release/pelotech/terraform-aws-oidc-github?sort=semver&display_name=release)](https://github.com/pelotech/terraform-aws-oidc-github/releases)
+
 Provision GitHub Actions → AWS authentication via OpenID Connect, with no long-lived AWS keys.
 
 This module creates the GitHub OIDC identity provider in your AWS account and one IAM role per entry in `roles`. Each role trusts a configurable set of GitHub subject claims (specific repos, branches, tags, environments, or pull requests) and attaches the IAM policies you specify. Based on the [official GitHub OIDC for AWS guide](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).
@@ -83,6 +85,14 @@ The `subject_repos` list contains GitHub OIDC `sub` claim patterns. Common shape
 GitHub's full claim reference: <https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#example-subject-claims>.
 
 > **Tip:** Prefer GitHub Environments over branch matching when you can — environments give you reviewer gates, secrets scoping, and protection rules on the GitHub side.
+
+## Security notes
+
+A few patterns that are easy to reach for and cause real damage:
+
+- **Avoid `repo:ORG/*` on high-privilege roles.** A wildcard `sub` claim lets any repo in the org (including a private fork created by a compromised contributor) assume the role. Prefer specific repo + branch, or — better — a `repo:ORG/REPO:environment:production` claim gated by a GitHub Environment with reviewer approval.
+- **Treat `assume_role_names` as a development-only escape hatch.** Never point it at a broad SSO role such as `AWSReservedSSO_AdministratorAccess_*`; that lets anyone with console access impersonate the CI role. Use a named, least-privilege debug role, and remove the entry before production.
+- **Keep `max_session_duration` tight.** Start at the default (1 hour). Only raise it for workflows that demonstrably need longer sessions — AWS allows up to 12 hours, but a leaked OIDC token is valid for the full duration.
 
 ## GitHub Actions workflow
 
