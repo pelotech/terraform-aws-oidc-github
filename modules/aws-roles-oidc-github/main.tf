@@ -59,3 +59,11 @@ resource "aws_iam_role_policy_attachment" "github_ci" {
   role       = aws_iam_role.github_ci.name
   policy_arn = each.value
 }
+
+resource "aws_iam_role_policy" "inline" {
+  for_each = var.inline_policies
+
+  name   = each.key
+  role   = aws_iam_role.github_ci.name
+  policy = each.value
+}

@@ -24,6 +24,7 @@ module "aws_oidc_github" {
   assume_role_names        = each.value.assume_role_names
   github_oidc_provider_arn = aws_iam_openid_connect_provider.github.arn
   github_oidc_provider_url = aws_iam_openid_connect_provider.github.url
-  max_session_duration     = var.max_session_duration
+  max_session_duration     = coalesce(each.value.max_session_duration, var.max_session_duration)
+  inline_policies          = each.value.inline_policies
   tags                     = var.tags
 }

@@ -33,6 +33,12 @@ variable "policy_arns" {
   description = "IAM policy ARNs to attach to the role (managed or customer-managed policies)."
 }
 
+variable "inline_policies" {
+  type        = map(string)
+  default     = {}
+  description = "Inline IAM policies to attach to the role. Map of policy name to rendered policy document JSON (typically from data.aws_iam_policy_document.<name>.json)."
+}
+
 variable "assume_role_names" {
   type        = list(string)
   default     = []
