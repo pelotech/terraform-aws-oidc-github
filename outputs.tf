@@ -1,10 +1,5 @@
-output "iam_role_arns" {
-  description = "Roles that will be assumed by GitHub Action. (Deprecated: use `iam_role_arns_map` instead; this output will be removed in v2.)"
-  value       = values(module.aws_oidc_github)[*].iam_role_arn
-}
-
 output "iam_role_arns_map" {
-  description = "Map of role name to role ARN. Prefer this output; the flat `iam_role_arns` list will be removed in v2."
+  description = "Map of role name to IAM role ARN."
   value       = { for k, m in module.aws_oidc_github : k => m.iam_role_arn }
 }
 
