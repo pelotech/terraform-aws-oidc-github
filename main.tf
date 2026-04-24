@@ -3,7 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.0"
+      version = ">= 5.39.0"
     }
   }
 }
@@ -11,16 +11,11 @@ terraform {
 resource "aws_iam_openid_connect_provider" "github" {
   url            = var.github_tls_url
   client_id_list = [var.aud_value]
-  # AWS stopped enforcing thumbprint verification for the GitHub OIDC issuer in
-  # mid-2023, but the AWS provider still requires a 40-char hex value. Pass the
-  # historical GitHub thumbprint as a placeholder; the actual trust is enforced
-  # by IAM via the provider URL, not this value.
-  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
-  tags            = var.tags
+  tags           = var.tags
 }
 
 module "aws_oidc_github" {
-  for_each                 = var.role_subject-repos_policies
+  for_each                 = var.roles
   source                   = "./modules/aws-roles-oidc-github"
   role_name                = each.key
   role_path                = each.value.role_path

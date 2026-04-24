@@ -1,6 +1,6 @@
 # aws-roles-oidc-github (internal submodule)
 
-This is an **internal building block** consumed by the root [`terraform-aws-oidc-github`](../../README.md) module. Most users should consume the root module directly — it provisions the OIDC provider and calls this submodule once per role you define in `role_subject-repos_policies`.
+This is an **internal building block** consumed by the root [`terraform-aws-oidc-github`](../../README.md) module. Most users should consume the root module directly — it provisions the OIDC provider and calls this submodule once per role you define in `roles`.
 
 Use this submodule directly **only** if you already manage your `aws_iam_openid_connect_provider` elsewhere and want to layer additional roles onto it without re-creating the provider. In that case, pass the existing provider's ARN and URL into `github_oidc_provider_arn` and `github_oidc_provider_url`.
 
@@ -10,13 +10,13 @@ Use this submodule directly **only** if you already manage your `aws_iam_openid_
 | Name | Version |
 | ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.39.0 |
 
 ## Providers
 
 | Name | Version |
 | ---- | ------- |
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.39.0 |
 
 ## Modules
 
@@ -27,6 +27,7 @@ No modules.
 | Name | Type |
 | ---- | ---- |
 | [aws_iam_role.github_ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.github_ci](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/partition) | data source |

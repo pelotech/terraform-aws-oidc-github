@@ -3,11 +3,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = ">= 4.0.3"
+      version = ">= 5.39.0"
     }
   }
 }
@@ -23,7 +19,7 @@ module "aws_oidc_github" {
     aws = aws.my_alias
   }
 
-  role_subject-repos_policies = {
+  roles = {
     # A role scoped to the `main` branch of one repo, granted Administrator,
     # and additionally assumable by an SSO role for local debugging.
     "org-infra-main" = {

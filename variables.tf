@@ -1,4 +1,4 @@
-variable "role_subject-repos_policies" {
+variable "roles" {
   type = map(object({
     role_path         = optional(string, "/")
     subject_repos     = list(string)
@@ -15,14 +15,14 @@ variable "role_subject-repos_policies" {
 
   validation {
     condition = alltrue([
-      for v in var.role_subject-repos_policies : alltrue([for r in v.subject_repos : startswith(r, "repo:")])
+      for v in var.roles : alltrue([for r in v.subject_repos : startswith(r, "repo:")])
     ])
     error_message = "Every subject_repos entry must start with \"repo:\" (e.g. \"repo:my-org/my-repo:ref:refs/heads/main\")."
   }
 
   validation {
     condition = alltrue([
-      for v in var.role_subject-repos_policies : can(regex("^/([a-zA-Z0-9._+-]+/)*$", v.role_path))
+      for v in var.roles : can(regex("^/([a-zA-Z0-9._+-]+/)*$", v.role_path))
     ])
     error_message = "Each role_path must start and end with '/' and only contain [a-zA-Z0-9._+-] segments (e.g. \"/\", \"/github/\", \"/teams/platform/\")."
   }
