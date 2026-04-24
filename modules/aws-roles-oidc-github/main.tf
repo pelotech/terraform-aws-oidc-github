@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.0"
     }
-    tls = {
-      source  = "hashicorp/tls"
-      version = ">= 4.0.3"
-    }
   }
 }
 
@@ -56,4 +52,5 @@ resource "aws_iam_role" "github_ci" {
   max_session_duration = var.max_session_duration
   assume_role_policy   = data.aws_iam_policy_document.assume_role_policy.json
   managed_policy_arns  = var.policy_arns
+  tags                 = var.tags
 }
