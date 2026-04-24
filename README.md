@@ -65,9 +65,30 @@ module "aws_oidc_github" {
       subject_repos = ["repo:my-org/infrastructure:pull_request"]
       policy_arns   = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
     }
+
+    # Long integration job: bump the session to 4h and add a bespoke inline policy
+    # for a grant that's too narrow to justify a standalone aws_iam_policy.
+    "infra-integration-tests" = {
+      subject_repos        = ["repo:my-org/infrastructure:environment:integration"]
+      policy_arns          = ["arn:aws:iam::aws:policy/ReadOnlyAccess"]
+      max_session_duration = 14400 # 4h, overrides the module-level default
+
+      inline_policies = {
+        "describe-integration-stacks" = data.aws_iam_policy_document.describe_integration_stacks.json
+      }
+    }
   }
 }
 ```
+
+Each entry in `roles` supports the following keys:
+
+- `subject_repos` (required) — OIDC subject claims allowed to assume the role. See the cheat sheet below.
+- `policy_arns` (required, may be empty) — IAM policy ARNs to attach.
+- `inline_policies` (optional) — Map of policy name → rendered policy document JSON. Good for one-off grants that don't deserve a standalone `aws_iam_policy`.
+- `max_session_duration` (optional) — Per-role override in seconds (3600–43200). Omit to inherit the module-level `var.max_session_duration`.
+- `role_path` (optional) — IAM path. Defaults to `/`.
+- `assume_role_names` (optional) — IAM role names in the same account that may also `sts:AssumeRole` this role. Development-only escape hatch; see [Security notes](#security-notes).
 
 ## Subject string cheat sheet
 
@@ -177,7 +198,7 @@ If you set `audience:` on `aws-actions/configure-aws-credentials`, set the match
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | Audience claim required in the OIDC token. Defaults to the value the official aws-actions/configure-aws-credentials action sends. | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub OIDC issuer URL. Override only for GitHub Enterprise Server. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds for every role created. Defaults to 1 hour. Increase up to 43200 (12h) if your workflows need longer sessions. | `number` | `3600` | no |
-| <a name="input_roles"></a> [roles](#input\_roles) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`     : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`       : IAM policy ARNs to attach to the role.<br/>  - `role_path`         : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names` : (optional) IAM role names in the same account that may also assume this role (useful for local debugging). | <pre>map(object({<br/>    role_path         = optional(string, "/")<br/>    subject_repos     = list(string)<br/>    policy_arns       = list(string)<br/>    assume_role_names = optional(list(string))<br/>  }))</pre> | n/a | yes |
+| <a name="input_roles"></a> [roles](#input\_roles) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`        : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`          : IAM policy ARNs to attach to the role.<br/>  - `role_path`            : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names`    : (optional) IAM role names in the same account that may also assume this role (useful for local debugging).<br/>  - `max_session_duration` : (optional) Per-role override of the module-level max\_session\_duration, in seconds. Must be 3600-43200. Omit to inherit var.max\_session\_duration.<br/>  - `inline_policies`      : (optional) Map of inline IAM policy name to rendered policy document JSON (typically from data.aws\_iam\_policy\_document.<name>.json). | <pre>map(object({<br/>    role_path            = optional(string, "/")<br/>    subject_repos        = list(string)<br/>    policy_arns          = list(string)<br/>    assume_role_names    = optional(list(string))<br/>    max_session_duration = optional(number)<br/>    inline_policies      = optional(map(string), {})<br/>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the OIDC provider and every IAM role created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs

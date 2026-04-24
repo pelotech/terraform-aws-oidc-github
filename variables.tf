@@ -1,16 +1,20 @@
 variable "roles" {
   type = map(object({
-    role_path         = optional(string, "/")
-    subject_repos     = list(string)
-    policy_arns       = list(string)
-    assume_role_names = optional(list(string))
+    role_path            = optional(string, "/")
+    subject_repos        = list(string)
+    policy_arns          = list(string)
+    assume_role_names    = optional(list(string))
+    max_session_duration = optional(number)
+    inline_policies      = optional(map(string), {})
   }))
   description = <<-EOT
     Map of IAM roles to create. The map key is the role name. Each value defines:
-      - `subject_repos`     : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").
-      - `policy_arns`       : IAM policy ARNs to attach to the role.
-      - `role_path`         : (optional) IAM path for the role. Defaults to "/".
-      - `assume_role_names` : (optional) IAM role names in the same account that may also assume this role (useful for local debugging).
+      - `subject_repos`        : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").
+      - `policy_arns`          : IAM policy ARNs to attach to the role.
+      - `role_path`            : (optional) IAM path for the role. Defaults to "/".
+      - `assume_role_names`    : (optional) IAM role names in the same account that may also assume this role (useful for local debugging).
+      - `max_session_duration` : (optional) Per-role override of the module-level max_session_duration, in seconds. Must be 3600-43200. Omit to inherit var.max_session_duration.
+      - `inline_policies`      : (optional) Map of inline IAM policy name to rendered policy document JSON (typically from data.aws_iam_policy_document.<name>.json).
   EOT
 
   validation {
@@ -41,6 +45,23 @@ variable "roles" {
       ])
     ])
     error_message = "Every policy_arns entry must be a valid IAM policy ARN (e.g. \"arn:aws:iam::aws:policy/ReadOnlyAccess\" or \"arn:aws:iam::123456789012:policy/my-policy\")."
+  }
+
+  validation {
+    condition = alltrue([
+      for v in var.roles :
+      try(v.max_session_duration >= 3600 && v.max_session_duration <= 43200, true)
+    ])
+    error_message = "Per-role max_session_duration must be null (to inherit the module default) or between 3600 (1h) and 43200 (12h) — AWS-enforced bounds."
+  }
+
+  validation {
+    condition = alltrue([
+      for v in var.roles : alltrue([
+        for name, _ in v.inline_policies : can(regex("^[a-zA-Z0-9+=,.@_-]{1,128}$", name))
+      ])
+    ])
+    error_message = "Each inline_policies map key (the IAM policy name) must be 1–128 characters and match [a-zA-Z0-9+=,.@_-]."
   }
 }
 
