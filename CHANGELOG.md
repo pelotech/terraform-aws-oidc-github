@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v0.6.0...v1.0.0) (2026-04-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* v2 cleanup — rename input, drop deprecated internals, modernize provider ([#12](https://github.com/pelotech/terraform-aws-oidc-github/issues/12))
+
+### Features
+
+* v2 cleanup — rename input, drop deprecated internals, modernize provider ([#12](https://github.com/pelotech/terraform-aws-oidc-github/issues/12)) ([3d791e2](https://github.com/pelotech/terraform-aws-oidc-github/commit/3d791e2aa55cf685b94b274520802892b97d2446))
+
 ## [0.6.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v0.5.0...v0.6.0) (2026-04-24)
 
 
