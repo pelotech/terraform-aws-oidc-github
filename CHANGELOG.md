@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.1.0...v1.2.0) (2026-04-24)
+
+
+### Features
+
+* per-role max_session_duration and inline policy support ([#18](https://github.com/pelotech/terraform-aws-oidc-github/issues/18)) ([afd2289](https://github.com/pelotech/terraform-aws-oidc-github/commit/afd228952b6c9bdb31bbb2932e202b0a0216cf5f))
+
 ## [1.1.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.0.0...v1.1.0) (2026-04-24)
 
 
