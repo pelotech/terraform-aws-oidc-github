@@ -35,7 +35,7 @@ module "aws_oidc_github" {
 }
 
 output "role_arn" {
-  value = module.aws_oidc_github.iam_role_arns["deploy-main"]
+  value = module.aws_oidc_github.iam_role_arns_map["deploy-main"]
 }
 ```
 
@@ -103,7 +103,7 @@ jobs:
       - run: aws sts get-caller-identity
 ```
 
-The `role-to-assume` value is the full ARN of one of the roles this module created — `module.aws_oidc_github.iam_role_arns[<key>]`.
+The `role-to-assume` value is the full ARN of one of the roles this module created — `module.aws_oidc_github.iam_role_arns_map[<role-name>]` (the map key matches the entry name you used in `role_subject-repos_policies`). The older `iam_role_arns` flat-list output is deprecated and will be removed in v2.
 
 ## Debugging with `assume_role_names`
 
@@ -142,7 +142,7 @@ The [`wrappers/`](./wrappers) directory contains thin wrapper modules pre-config
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
 | <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 4.0.3 |
@@ -150,37 +150,39 @@ The [`wrappers/`](./wrappers) directory contains thin wrapper modules pre-config
 ## Providers
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | >= 4.0.3 |
 
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_aws_oidc_github"></a> [aws\_oidc\_github](#module\_aws\_oidc\_github) | ./modules/aws-roles-oidc-github | n/a |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_iam_openid_connect_provider.github](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
 | [tls_certificate.github](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/data-sources/certificate) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | Audience claim required in the OIDC token. Defaults to the value the official aws-actions/configure-aws-credentials action sends. | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub OIDC issuer URL. Override only for GitHub Enterprise Server. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds for every role created. Defaults to 1 hour. Increase up to 43200 (12h) if your workflows need longer sessions. | `number` | `3600` | no |
-| <a name="input_role_subject-repos_policies"></a> [role\_subject-repos\_policies](#input\_role\_subject-repos\_policies) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`     : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`       : IAM policy ARNs to attach to the role.<br/>  - `role_path`         : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names` : (optional) IAM role names in the same account that may also assume this role (useful for local debugging). | <pre>map(object({<br/>    role_path         = optional(string)<br/>    subject_repos     = list(string)<br/>    policy_arns       = list(string)<br/>    assume_role_names = optional(list(string))<br/>  }))</pre> | n/a | yes |
+| <a name="input_role_subject-repos_policies"></a> [role\_subject-repos\_policies](#input\_role\_subject-repos\_policies) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`     : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`       : IAM policy ARNs to attach to the role.<br/>  - `role_path`         : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names` : (optional) IAM role names in the same account that may also assume this role (useful for local debugging). | <pre>map(object({<br/>    role_path         = optional(string, "/")<br/>    subject_repos     = list(string)<br/>    policy_arns       = list(string)<br/>    assume_role_names = optional(list(string))<br/>  }))</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the OIDC provider and every IAM role created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_github_oidc_provider_arn"></a> [github\_oidc\_provider\_arn](#output\_github\_oidc\_provider\_arn) | oidc provider arn to use for roles/policies |
 | <a name="output_github_oidc_provider_url"></a> [github\_oidc\_provider\_url](#output\_github\_oidc\_provider\_url) | oidc provider url to use for roles/policies |
-| <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Roles that will be assumed by GitHub Action |
+| <a name="output_iam_role_arns"></a> [iam\_role\_arns](#output\_iam\_role\_arns) | Roles that will be assumed by GitHub Action. (Deprecated: use `iam_role_arns_map` instead; this output will be removed in v2.) |
+| <a name="output_iam_role_arns_map"></a> [iam\_role\_arns\_map](#output\_iam\_role\_arns\_map) | Map of role name to role ARN. Prefer this output; the flat `iam_role_arns` list will be removed in v2. |
 <!-- END_TF_DOCS -->
