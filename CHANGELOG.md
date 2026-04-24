@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.0.0...v1.1.0) (2026-04-24)
+
+
+### Features
+
+* v1.1 validations and iam_role_names output ([#17](https://github.com/pelotech/terraform-aws-oidc-github/issues/17)) ([1dc106f](https://github.com/pelotech/terraform-aws-oidc-github/commit/1dc106f5641fb12ba757a4216fc57f018df71031))
+
+
+### Docs
+
+* remove wrappers/ reference from README ([#14](https://github.com/pelotech/terraform-aws-oidc-github/issues/14)) ([55141bc](https://github.com/pelotech/terraform-aws-oidc-github/commit/55141bcd4edc969c149afa838214b44b3555a00d))
+* security notes + repo hygiene (badge, CODEOWNERS, issue template) ([#16](https://github.com/pelotech/terraform-aws-oidc-github/issues/16)) ([fa474f1](https://github.com/pelotech/terraform-aws-oidc-github/commit/fa474f120647b556aef9a8ed1c0dfee2977a883c))
+
 ## [1.0.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v0.6.0...v1.0.0) (2026-04-24)
 
 
