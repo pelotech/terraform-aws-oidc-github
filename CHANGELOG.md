@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.2.0...v1.2.1) (2026-04-25)
+
+
+### Chores
+
+* change code owners to foundation ([1ed489c](https://github.com/pelotech/terraform-aws-oidc-github/commit/1ed489cac3b287b6d771e7ffd5248e6b65d59a81))
+* remove pre-commit module creation ([8fb07db](https://github.com/pelotech/terraform-aws-oidc-github/commit/8fb07db07ec731a81abac511f665cb50096d2960))
+
 ## [1.2.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.1.0...v1.2.0) (2026-04-24)
 
 
