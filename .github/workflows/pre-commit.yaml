@@ -1,4 +1,6 @@
 name: pre-commit
+permissions:
+  contents: read
 on:
   push:
     branches:
@@ -10,31 +12,17 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: install pre-commit
-        run: pip install pre-commit
-
-      - name: Terraform
-        uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          terraform_version: "1.5.7"
-
-      - name: install hcledit
-        run: |
-          curl -sSLo ./hcledit.tar.gz https://github.com/minamijoyo/hcledit/releases/download/v0.2.10/hcledit_0.2.10_linux_amd64.tar.gz
-          tar -xzf hcledit.tar.gz
-          chmod +x hcledit
-          mv hcledit /usr/local/bin/hcledit
-
-      - name: install tf-lint
-        run: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-
-      - name: install tf-docs
-        run: |
-          curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v0.17.0/terraform-docs-v0.17.0-linux-amd64.tar.gz
-          tar -xzf terraform-docs.tar.gz
-          chmod +x terraform-docs
-          mv terraform-docs /usr/local/bin/terraform-docs
-
-      - name: pre-commit
-        run: pre-commit run --all-files --show-diff-on-failure
+          persist-credentials: false
+      - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            extra-substituters = https://nixpkgs-terraform.cachix.org
+            extra-trusted-public-keys = nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw=
+      - name: Put nix devshell tools on PATH
+        shell: bash
+        run: nix develop .#ci -c printenv PATH >> "$GITHUB_PATH" # zizmor: ignore[github-env]
+      - name: prek
+        run: prek run --all-files --show-diff-on-failure
