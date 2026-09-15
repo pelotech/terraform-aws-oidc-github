@@ -1,6 +1,12 @@
 {
   description = "Flake config";
 
+  nixConfig = {
+    # Pre-built Terraform binaries from nixpkgs-terraform; avoids building from source.
+    extra-substituters = "https://nixpkgs-terraform.cachix.org";
+    extra-trusted-public-keys = "nixpkgs-terraform.cachix.org-1:8Sit092rIdAVENA3ZVeH9hzSiqI/jng6JiCrQ1Dmusw=";
+  };
+
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -32,34 +38,37 @@
             )
           );
           terraform = inputs.nixpkgs-terraform.packages.${system}."terraform-${tfVersion}";
+
+          # Everything pre-commit needs; this is all CI installs.
+          lintTools = with pkgs; [
+            terraform
+            prek
+            tflint
+            hcledit
+            yamllint
+            terraform-docs
+            actionlint
+            zizmor
+          ];
         in
         {
-          devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              # terraform, pinned to required_version floor
-              terraform
+          devShells.ci = pkgs.mkShellNoCC { packages = lintTools; };
 
-              # sops
-              rage
-              age-plugin-yubikey
-              sops
+          devShells.default = pkgs.mkShellNoCC {
+            packages =
+              lintTools
+              ++ (with pkgs; [
+                # sops
+                rage
+                age-plugin-yubikey
+                sops
 
-              # aws
-              awscli2
-              aws-sso-cli
+                # aws
+                awscli2
+                aws-sso-cli
 
-              just
-
-              # pre-commit
-              prek
-              tflint
-              hcledit
-              yamllint
-              terraform-docs
-              actionlint
-              zizmor
-
-            ];
+                just
+              ]);
           };
 
           treefmt = {
