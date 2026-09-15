@@ -7,6 +7,7 @@ on:
 jobs:
   pr-lint:
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
       - uses: morrisoncole/pr-lint-action@51f3cfabaf5d46f94e54524214e45685f0401b2a # v1.7.1
         with:

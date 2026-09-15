@@ -1,10 +1,10 @@
 {
-  extends: [
-    ":semanticCommits",
-    "config:recommended",
-    'helpers:pinGitHubActionDigests'
-  ],
-  dependencyDashboard: true,
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: ['config:best-practices'],
+  "pre-commit": {
+    enabled: true,
+  },
+  minimumReleaseAge: "7 days",
   packageRules: [
     {
       description: "Group terraform-aws-modules IAM updates together",
