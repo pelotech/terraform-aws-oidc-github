@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.1](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.2.0...v1.2.1) (2026-09-15)
+
+
+### Chores
+
+* change code owners to foundation ([1ed489c](https://github.com/pelotech/terraform-aws-oidc-github/commit/1ed489cac3b287b6d771e7ffd5248e6b65d59a81))
+* **deps:** update actions/checkout action to v7 ([#23](https://github.com/pelotech/terraform-aws-oidc-github/issues/23)) ([aa043cb](https://github.com/pelotech/terraform-aws-oidc-github/commit/aa043cbc38b5c3c10ccf9f03fa1941eeae9f4ab8))
+* **deps:** update hashicorp/setup-terraform digest to dfe3c3f ([#21](https://github.com/pelotech/terraform-aws-oidc-github/issues/21)) ([4938317](https://github.com/pelotech/terraform-aws-oidc-github/commit/4938317610860f758141342cea55f651afa07902))
+* **deps:** update tflint plugin terraform-linters/tflint-ruleset-aws to v0.48.0 ([#24](https://github.com/pelotech/terraform-aws-oidc-github/issues/24)) ([0a14104](https://github.com/pelotech/terraform-aws-oidc-github/commit/0a14104b54a785ccb2676e21cafc7962c59e350c))
+* remove pre-commit module creation ([8fb07db](https://github.com/pelotech/terraform-aws-oidc-github/commit/8fb07db07ec731a81abac511f665cb50096d2960))
+* update to nix and add action linting ([#26](https://github.com/pelotech/terraform-aws-oidc-github/issues/26)) ([f7615fc](https://github.com/pelotech/terraform-aws-oidc-github/commit/f7615fcef6068a367cc94a392f95f0b8bb114cec))
+
 ## [1.2.0](https://github.com/pelotech/terraform-aws-oidc-github/compare/v1.1.0...v1.2.0) (2026-04-24)
 
 
