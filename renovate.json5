@@ -9,6 +9,14 @@
   minimumReleaseAge: '7 days',
   packageRules: [
     {
+      description: 'Group pre-commit hook and tflint plugin updates into one PR',
+      matchManagers: [
+        'pre-commit',
+        'tflint-plugin',
+      ],
+      groupName: 'lint tooling',
+    },
+    {
       description: 'Group terraform-aws-modules IAM updates together',
       matchDatasources: [
         'terraform-module',
