@@ -7,18 +7,18 @@ repos:
       - id: trailing-whitespace
       - id: forbid-submodules
   - repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.38.0
     hooks:
       - id: yamllint
         args: [--strict, -c=.yamllint]
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v9.18.0
+    rev: v9.27.0
     hooks:
       - id: commitlint
         stages: [commit-msg]
         additional_dependencies: ["@commitlint/config-conventional"]
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.96.1
+    rev: v1.109.4
     hooks:
       - id: terraform_fmt
       - id: terraform_tflint
@@ -37,10 +37,10 @@ repos:
         files: ^modules/aws-roles-oidc-github/.*\.(tf|tftest\.hcl)$
         pass_filenames: false
   - repo: https://github.com/kjanat/actionlint
-    rev: v1.16.1
+    rev: v1.17
     hooks:
       - id: actionlint
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.30.1
+    rev: v1.31.1
     hooks:
       - id: zizmor
