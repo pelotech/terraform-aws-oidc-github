@@ -9,11 +9,11 @@ output "iam_role_names" {
 }
 
 output "github_oidc_provider_arn" {
-  description = "oidc provider arn to use for roles/policies"
+  description = "ARN of the GitHub OIDC provider. Use it to trust GitHub Actions from roles created outside this module."
   value       = aws_iam_openid_connect_provider.github.arn
 }
 
 output "github_oidc_provider_url" {
-  description = "oidc provider url to use for roles/policies"
+  description = "Issuer URL of the GitHub OIDC provider. Strip any `https://` prefix to get the host used in trust-policy condition keys such as `<host>:sub`."
   value       = aws_iam_openid_connect_provider.github.url
 }

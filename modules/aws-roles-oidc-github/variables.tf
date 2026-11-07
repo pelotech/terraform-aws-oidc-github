@@ -42,6 +42,7 @@ variable "inline_policies" {
 variable "assume_role_names" {
   type        = list(string)
   default     = []
+  nullable    = false
   description = "IAM role names in the same account that may assume this role via sts:AssumeRole. Useful for local debugging; remove before production."
 }
 

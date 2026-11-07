@@ -52,12 +52,13 @@ module "aws_oidc_github" {
   source = "pelotech/oidc-github/aws"
 
   roles = {
-    # Production deploys: only `main`, with full access and an SSO debug escape hatch.
+    # Production deploys: only `main`, with full access and a narrow SSO debug escape hatch.
+    # SSO roles live under the `aws-reserved/sso.amazonaws.com/<region>/` path, so include it.
     "infra-prod" = {
       role_path         = "/github/"
       subject_repos     = ["repo:my-org/infrastructure:ref:refs/heads/main"]
       policy_arns       = ["arn:aws:iam::aws:policy/AdministratorAccess"]
-      assume_role_names = ["AWSReservedSSO_AdministratorAccess_xxxxxxxxxxxxxxxx"]
+      assume_role_names = ["aws-reserved/sso.amazonaws.com/us-east-1/AWSReservedSSO_GitHubCIDebug_xxxxxxxxxxxxxxxx"]
     }
 
     # PR previews: any pull request in the same repo, read-only.
@@ -170,7 +171,7 @@ If you set `audience:` on `aws-actions/configure-aws-credentials`, set the match
 
 | Name | Version |
 | ---- | ------- |
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.7 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.7.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.39.0 |
 
 ## Providers
@@ -198,15 +199,15 @@ If you set `audience:` on `aws-actions/configure-aws-credentials`, set the match
 | <a name="input_aud_value"></a> [aud\_value](#input\_aud\_value) | Audience claim required in the OIDC token. Defaults to the value the official aws-actions/configure-aws-credentials action sends. | `string` | `"sts.amazonaws.com"` | no |
 | <a name="input_github_tls_url"></a> [github\_tls\_url](#input\_github\_tls\_url) | GitHub OIDC issuer URL. Override only for GitHub Enterprise Server. | `string` | `"https://token.actions.githubusercontent.com"` | no |
 | <a name="input_max_session_duration"></a> [max\_session\_duration](#input\_max\_session\_duration) | Maximum session duration in seconds for every role created. Defaults to 1 hour. Increase up to 43200 (12h) if your workflows need longer sessions. | `number` | `3600` | no |
-| <a name="input_roles"></a> [roles](#input\_roles) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`        : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`          : IAM policy ARNs to attach to the role.<br/>  - `role_path`            : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names`    : (optional) IAM role names in the same account that may also assume this role (useful for local debugging).<br/>  - `max_session_duration` : (optional) Per-role override of the module-level max\_session\_duration, in seconds. Must be 3600-43200. Omit to inherit var.max\_session\_duration.<br/>  - `inline_policies`      : (optional) Map of inline IAM policy name to rendered policy document JSON (typically from data.aws\_iam\_policy\_document.<name>.json). | <pre>map(object({<br/>    role_path            = optional(string, "/")<br/>    subject_repos        = list(string)<br/>    policy_arns          = list(string)<br/>    assume_role_names    = optional(list(string))<br/>    max_session_duration = optional(number)<br/>    inline_policies      = optional(map(string), {})<br/>  }))</pre> | n/a | yes |
+| <a name="input_roles"></a> [roles](#input\_roles) | Map of IAM roles to create. The map key is the role name. Each value defines:<br/>  - `subject_repos`        : OIDC subject claims allowed to assume this role (e.g. "repo:my-org/my-repo:ref:refs/heads/main").<br/>  - `policy_arns`          : IAM policy ARNs to attach to the role.<br/>  - `role_path`            : (optional) IAM path for the role. Defaults to "/".<br/>  - `assume_role_names`    : (optional) IAM role names in the same account that may also assume this role (useful for local debugging).<br/>  - `max_session_duration` : (optional) Per-role override of the module-level max\_session\_duration, in seconds. Must be 3600-43200. Omit to inherit var.max\_session\_duration.<br/>  - `inline_policies`      : (optional) Map of inline IAM policy name to rendered policy document JSON (typically from data.aws\_iam\_policy\_document.<name>.json). | <pre>map(object({<br/>    role_path            = optional(string, "/")<br/>    subject_repos        = list(string)<br/>    policy_arns          = list(string)<br/>    assume_role_names    = optional(list(string), [])<br/>    max_session_duration = optional(number)<br/>    inline_policies      = optional(map(string), {})<br/>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags applied to the OIDC provider and every IAM role created by this module. | `map(string)` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 | ---- | ----------- |
-| <a name="output_github_oidc_provider_arn"></a> [github\_oidc\_provider\_arn](#output\_github\_oidc\_provider\_arn) | oidc provider arn to use for roles/policies |
-| <a name="output_github_oidc_provider_url"></a> [github\_oidc\_provider\_url](#output\_github\_oidc\_provider\_url) | oidc provider url to use for roles/policies |
+| <a name="output_github_oidc_provider_arn"></a> [github\_oidc\_provider\_arn](#output\_github\_oidc\_provider\_arn) | ARN of the GitHub OIDC provider. Use it to trust GitHub Actions from roles created outside this module. |
+| <a name="output_github_oidc_provider_url"></a> [github\_oidc\_provider\_url](#output\_github\_oidc\_provider\_url) | Issuer URL of the GitHub OIDC provider. Strip any `https://` prefix to get the host used in trust-policy condition keys such as `<host>:sub`. |
 | <a name="output_iam_role_arns_map"></a> [iam\_role\_arns\_map](#output\_iam\_role\_arns\_map) | Map of role name to IAM role ARN. |
 | <a name="output_iam_role_names"></a> [iam\_role\_names](#output\_iam\_role\_names) | Map of role name (the var.roles key) to the created IAM role name. Useful for wiring downstream resources (e.g. aws\_iam\_role\_policy) without parsing the ARN. |
 <!-- END_TF_DOCS -->

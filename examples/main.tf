@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.7"
+  required_version = ">= 1.7.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -14,7 +14,8 @@ provider "aws" {
 }
 
 module "aws_oidc_github" {
-  source = "pelotech/oidc-github/aws"
+  source  = "pelotech/oidc-github/aws"
+  version = "~> 1.2"
   providers = {
     aws = aws.my_alias
   }
