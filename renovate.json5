@@ -1,16 +1,22 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: ['config:best-practices'],
-  "pre-commit": {
+  extends: [
+    'config:best-practices',
+  ],
+  'pre-commit': {
     enabled: true,
   },
-  minimumReleaseAge: "7 days",
+  minimumReleaseAge: '7 days',
   packageRules: [
     {
-      description: "Group terraform-aws-modules IAM updates together",
-      matchDatasources: ["terraform-module"],
-      matchPackagePatterns: ["terraform-aws-modules/iam"],
-      groupName: "terraform-aws-modules/iam",
-    }
+      description: 'Group terraform-aws-modules IAM updates together',
+      matchDatasources: [
+        'terraform-module',
+      ],
+      groupName: 'terraform-aws-modules/iam',
+      matchPackageNames: [
+        '/terraform-aws-modules/iam/',
+      ],
+    },
   ],
 }
