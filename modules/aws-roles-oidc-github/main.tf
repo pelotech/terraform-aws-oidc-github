@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.5.7"
+  required_version = ">= 1.7.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -10,8 +10,6 @@ terraform {
 
 data "aws_partition" "current" {}
 data "aws_caller_identity" "current" {}
-
-
 
 data "aws_iam_policy_document" "assume_role_policy" {
   statement {
@@ -28,8 +26,9 @@ data "aws_iam_policy_document" "assume_role_policy" {
     }
 
   }
+  # One statement listing every allowed role (not one statement per role).
   dynamic "statement" {
-    for_each = var.assume_role_names != null ? var.assume_role_names : []
+    for_each = length(var.assume_role_names) > 0 ? [1] : []
     content {
       actions = ["sts:AssumeRole"]
       principals {

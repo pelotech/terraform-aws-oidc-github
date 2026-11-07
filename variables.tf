@@ -3,7 +3,7 @@ variable "roles" {
     role_path            = optional(string, "/")
     subject_repos        = list(string)
     policy_arns          = list(string)
-    assume_role_names    = optional(list(string))
+    assume_role_names    = optional(list(string), [])
     max_session_duration = optional(number)
     inline_policies      = optional(map(string), {})
   }))

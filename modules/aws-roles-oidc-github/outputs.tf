@@ -1,5 +1,5 @@
 output "iam_role_arn" {
-  description = "Role that will be assumed by GitHub Action"
+  description = "ARN of the IAM role that GitHub Actions assumes. Pass it as `role-to-assume` in the workflow."
   value       = aws_iam_role.github_ci.arn
 }
 
